@@ -1,1 +1,180 @@
-Hello World
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trendyol Kar Hesaplama Makinesi</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js will be loaded if available, otherwise fallback to text visualization -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Trendyol Kar Hesaplama Makinesi</h1>
+            <p>Satış fiyatınızı optimize edin ve karlılığınızı maximuma çıkarın</p>
+        </header>
+
+        <div class="calculator-container">
+            <div class="input-section">
+                <h2>Ürün Bilgileri</h2>
+                
+                <!-- Ürün Maliyeti -->
+                <div class="input-group">
+                    <label for="product-cost">Ürün Maliyeti (₺)</label>
+                    <input type="number" id="product-cost" placeholder="0.00" min="0" step="0.01">
+                </div>
+
+                <!-- KDV Oranı -->
+                <div class="input-group">
+                    <label for="vat-rate">KDV Oranı</label>
+                    <select id="vat-rate">
+                        <option value="1">%1</option>
+                        <option value="10">%10</option>
+                        <option value="20" selected>%20</option>
+                    </select>
+                </div>
+
+                <!-- Kargo Masrafları -->
+                <div class="input-group">
+                    <label>Kargo Masrafları</label>
+                    <div class="shipping-costs">
+                        <div class="shipping-range">
+                            <label for="shipping-0-150">0-150₺ arası siparişler (₺)</label>
+                            <input type="number" id="shipping-0-150" placeholder="0.00" min="0" step="0.01" value="15.00">
+                        </div>
+                        <div class="shipping-range">
+                            <label for="shipping-150-300">150-300₺ arası siparişler (₺)</label>
+                            <input type="number" id="shipping-150-300" placeholder="0.00" min="0" step="0.01" value="10.00">
+                        </div>
+                        <div class="shipping-range">
+                            <label for="shipping-300-plus">300₺+ siparişler (₺)</label>
+                            <input type="number" id="shipping-300-plus" placeholder="0.00" min="0" step="0.01" value="0.00">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Satış Fiyatı Slider -->
+                <div class="input-group">
+                    <label for="sales-price">Satış Fiyatı: <span id="sales-price-value">100.00</span>₺</label>
+                    <input type="range" id="sales-price" min="10" max="1000" value="100" step="0.01">
+                    <div class="slider-labels">
+                        <span>10₺</span>
+                        <span>1000₺</span>
+                    </div>
+                </div>
+
+                <!-- Komisyon Bilgisi (Read-only) -->
+                <div class="input-group">
+                    <label>Komisyon Oranı</label>
+                    <div class="commission-info">
+                        <span id="commission-rate">13.5%</span>
+                        <small id="commission-range-info">374.50₺ ve altı</small>
+                    </div>
+                </div>
+
+                <!-- E-ticaret Stopaj -->
+                <div class="input-group">
+                    <label>E-ticaret Stopaj</label>
+                    <div class="stopaj-info">
+                        <span>%1 (Sabit)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2>Kar Hesaplaması</h2>
+                
+                <!-- Ana Sonuçlar -->
+                <div class="main-results">
+                    <div class="result-card profit">
+                        <h3>Net Kar</h3>
+                        <span class="amount" id="net-profit">0.00₺</span>
+                    </div>
+                    <div class="result-card margin">
+                        <h3>Kar Marjı</h3>
+                        <span class="percentage" id="profit-margin">0.00%</span>
+                    </div>
+                </div>
+
+                <!-- Gider Dağılımı -->
+                <div class="chart-container">
+                    <h3>Gider Dağılımı</h3>
+                    <div id="expense-visualization">
+                        <div class="expense-bars">
+                            <div class="expense-bar" data-category="product-cost">
+                                <span class="bar-label">Ürün Maliyeti</span>
+                                <div class="bar-fill" style="background-color: #FF6B6B;"></div>
+                                <span class="bar-value">0.00₺ (0%)</span>
+                            </div>
+                            <div class="expense-bar" data-category="commission">
+                                <span class="bar-label">Komisyon</span>
+                                <div class="bar-fill" style="background-color: #4ECDC4;"></div>
+                                <span class="bar-value">0.00₺ (0%)</span>
+                            </div>
+                            <div class="expense-bar" data-category="vat">
+                                <span class="bar-label">KDV</span>
+                                <div class="bar-fill" style="background-color: #45B7D1;"></div>
+                                <span class="bar-value">0.00₺ (0%)</span>
+                            </div>
+                            <div class="expense-bar" data-category="shipping">
+                                <span class="bar-label">Kargo</span>
+                                <div class="bar-fill" style="background-color: #96CEB4;"></div>
+                                <span class="bar-value">0.00₺ (0%)</span>
+                            </div>
+                            <div class="expense-bar" data-category="stopaj">
+                                <span class="bar-label">E-ticaret Stopaj</span>
+                                <div class="bar-fill" style="background-color: #FFEAA7;"></div>
+                                <span class="bar-value">0.00₺ (0%)</span>
+                            </div>
+                            <div class="expense-bar" data-category="profit">
+                                <span class="bar-label">Net Kar</span>
+                                <div class="bar-fill" style="background-color: #DDA0DD;"></div>
+                                <span class="bar-value">0.00₺ (0%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detaylı Gider Dökümü -->
+                <div class="expense-breakdown">
+                    <h3>Detaylı Gider Dökümü</h3>
+                    <table class="breakdown-table">
+                        <tbody>
+                            <tr>
+                                <td>Satış Fiyatı</td>
+                                <td class="amount" id="breakdown-sales-price">0.00₺</td>
+                            </tr>
+                            <tr>
+                                <td>Ürün Maliyeti</td>
+                                <td class="expense" id="breakdown-product-cost">-0.00₺</td>
+                            </tr>
+                            <tr>
+                                <td>Komisyon</td>
+                                <td class="expense" id="breakdown-commission">-0.00₺</td>
+                            </tr>
+                            <tr>
+                                <td>KDV</td>
+                                <td class="expense" id="breakdown-vat">-0.00₺</td>
+                            </tr>
+                            <tr>
+                                <td>Kargo</td>
+                                <td class="expense" id="breakdown-shipping">-0.00₺</td>
+                            </tr>
+                            <tr>
+                                <td>E-ticaret Stopaj</td>
+                                <td class="expense" id="breakdown-stopaj">-0.00₺</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>Net Kar</strong></td>
+                                <td class="amount" id="breakdown-net-profit"><strong>0.00₺</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
