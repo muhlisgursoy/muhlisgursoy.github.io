@@ -260,8 +260,7 @@
         return str
             .replace(/i/g, 'İ')
             .replace(/ı/g, 'I')
-            .toUpperCase()
-            .replace(/İ/g, 'İ');
+            .toUpperCase();
     }
 
     /* ===== Guess ===== */
